@@ -1,6 +1,6 @@
 fastapi==0.115.1
 uvicorn[standard]==0.29.0
-tensorflow==2.15.0
+tensorflow==2.18.1
 torch==2.2.2
 pandas==2.2.1
 numpy==1.26.4
