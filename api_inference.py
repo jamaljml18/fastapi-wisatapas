@@ -214,9 +214,9 @@ def infer_cbf_search(query, top_k=10):
 
 #GENERATIVE AI UNTUK TEKS REKOMENDASI SINGKAT
 
-model_dir = "mjamalm18/t5-finetuned-recommendation-final"
-tokenizer = T5Tokenizer.from_pretrained(model_dir, legacy=True)
-model = T5ForConditionalGeneration.from_pretrained(model_dir)
+# model_dir = "mjamalm18/t5-finetuned-recommendation-final"
+# tokenizer = T5Tokenizer.from_pretrained(model_dir, legacy=True)
+# model = T5ForConditionalGeneration.from_pretrained(model_dir)
 
 # rekom_texts = []
 # for _, row in user_recs.iterrows():
@@ -224,32 +224,32 @@ model = T5ForConditionalGeneration.from_pretrained(model_dir)
 #     rekom_texts.append(teks)
 # input_text = "Rekomendasi tempat wisata: " + "; ".join(rekom_texts)
 
-def generate_natural_recommendation(user_id, favorite_place=None, top_n=1):
+# def generate_natural_recommendation(user_id, favorite_place=None, top_n=1):
 
-    user_recs = get_travel_recommendations(user_id=user_id, favorite_place=favorite_place)
+#     user_recs = get_travel_recommendations(user_id=user_id, favorite_place=favorite_place)
 
-    if user_recs.empty:
-        return "Tidak ada rekomendasi tersedia untuk user ini."
+#     if user_recs.empty:
+#         return "Tidak ada rekomendasi tersedia untuk user ini."
 
-    user_recs = user_recs.head(top_n)
-    input_template = "User menyukai kategori: {category}; lokasi: {city}; tempat: {place}; rating: {rating}"
+#     user_recs = user_recs.head(top_n)
+#     input_template = "User menyukai kategori: {category}; lokasi: {city}; tempat: {place}; rating: {rating}"
 
-    parts = []
-    for _, row in user_recs.iterrows():
-        part = input_template.format(
-            category=row['Category'],
-            city=row['City'],
-            place=row['Place_Name'],
-            rating=row['Rating']
-        )
-        parts.append(part)
+#     parts = []
+#     for _, row in user_recs.iterrows():
+#         part = input_template.format(
+#             category=row['Category'],
+#             city=row['City'],
+#             place=row['Place_Name'],
+#             rating=row['Rating']
+#         )
+#         parts.append(part)
 
-    input_text = " ; ".join(parts)
-    inputs = tokenizer(input_text, return_tensors="pt", max_length=512, truncation=True)
-    outputs = model.generate(**inputs, max_length=150)
-    result_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+#     input_text = " ; ".join(parts)
+#     inputs = tokenizer(input_text, return_tensors="pt", max_length=512, truncation=True)
+#     outputs = model.generate(**inputs, max_length=150)
+#     result_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-    return result_text
+#     return result_text
 
 # hasil = generate_natural_recommendation(user_id=1,favorite_place="Kampung Wisata Taman Sari")
 # print(hasil)
@@ -277,25 +277,25 @@ async def search(request: Request):
     result = infer_cbf_search(place)
     return {"query": place, "results": result}
 
-@app.post("/textgen")
-async def textgen(request: Request):
-    body = await request.json()
-    user_id = body.get("user_id")
-    favorite_place = body.get("favorite_place")
+# @app.post("/textgen")
+# async def textgen(request: Request):
+#     body = await request.json()
+#     user_id = body.get("user_id")
+#     favorite_place = body.get("favorite_place")
 
-    try:
-        user_id = int(user_id)
-    except (ValueError, TypeError):
-        return {
-            "user_id": user_id,
-            "gen_text": "User ID tidak valid."
-        }
+#     try:
+#         user_id = int(user_id)
+#     except (ValueError, TypeError):
+#         return {
+#             "user_id": user_id,
+#             "gen_text": "User ID tidak valid."
+#         }
 
-    # Panggil fungsi generate_natural_recommendation
-    gen_text = generate_natural_recommendation(user_id, favorite_place)
+#     # Panggil fungsi generate_natural_recommendation
+#     gen_text = generate_natural_recommendation(user_id, favorite_place)
 
-    return {
-        "user_id": user_id,
-        "favorite_place": favorite_place,
-        "gen_text": gen_text
-    }
+#     return {
+#         "user_id": user_id,
+#         "favorite_place": favorite_place,
+#         "gen_text": gen_text
+#     }
